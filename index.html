@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <button class="sidebar-btn" id="inicio"><i class="fa fa-home" aria-hidden="true"></i>
+        <button class="sidebar-btn" id="actualizar"><i class="fa fa-money" aria-hidden="true"></i>
+        <button class="sidebar-btn" id="stock"><i class="fa fa-archive" aria-hidden="true"></i>
+    </div>
+    <div class="container">
+        <form id="pedidoForm" action="/pedido" method="POST">
+            <label for="pedido">Pedido:</label>
+            <input type="text" id="pedido" name="pedido">
+            <label for="bebida">Bebida:</label>
+            <input type="text" id="bebida" name="bebida">
+            <label for="cliente">Cliente:</label>
+            <input type="text" id="cliente" name="cliente">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion">
+            <label for="total">Total:</label>
+            <input type="text" id="total" readonly>
+            <button type="button" class="enviar-pedido" onclick="enviarPedido()">Enviar Pedido</button>
+        </form>
+    </div>
+
+    <script>
+        function enviarPedido() {
+            const form = document.getElementById('pedidoForm');
+            const formData = new FormData(form);
+            
+            fetch('/pedido', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total').value = data.total;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
